@@ -24,6 +24,7 @@ def my_job():
 # unusable or are obsolete, are closed before and after your job has run. You should use it
 # to wrap any jobs that you schedule that access the Django database in any way.
 
+
 class Command(BaseCommand):
     help = "Runs APScheduler."
 

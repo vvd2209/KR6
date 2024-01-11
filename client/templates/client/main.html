@@ -7,7 +7,7 @@
         <a href="/" class="btn btn-outline-primary">Главная</a>
         <a href="{% url 'client:client_list' %}" class="btn btn-outline-primary">Клиенты</a>
         <a href="{% url 'mailing:mailing_list' %}" class="btn btn-outline-primary">Рассылки</a>
-        <a href="#" class="btn btn-outline-primary">Блог</a>
+        <a href="{% url 'blogs:list' %}" class="btn btn-outline-primary">Блог</a>
         {% if user.is_authenticated %}
             <a href="{% url 'users:profile' %}" class="btn btn-outline-primary">Профиль</a>
             <a href="{% url 'users:logout' %}" class="btn btn-outline-primary">Выход</a>
