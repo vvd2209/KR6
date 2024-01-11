@@ -1,0 +1,38 @@
+{% extends 'client/base.html'%}
+{% block content %}
+<div class="col-12 mb-5">
+    <a class="btn btn-outline-primary" href="{% url 'mailing:mailing_create'%}">Добавить рассылку</a>
+    <a class="btn btn-outline-primary" href="{% url 'client:main'%}">Назад</a>
+</div>
+{% for object in object_list %}
+<div class="col-md-4">
+    <div class="card mb-4 box-shadow">
+        <div class="card-body">
+            <p class="card-text">{{ object.start_time }}</p>
+            <p class="card-text">{{ object.end_time }}</p>
+            <p class="card-text">{{ object.periodicity }}</p>
+            <p class="card-text">
+                {% if object.status == COMPLETED %}
+                    <span class="text-muted">{{ object.status }}</span>
+                {% else %}
+                    {{ object.status }}
+                {% endif %}
+            </p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    {% if perms.mailing.view_mailing %}
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{% url 'mailing:mailing_detail' object.pk %}">Просмотр</a></button>
+                    {% endif %}
+                    {% if perms.mailing.change_mailing %}
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><a href="{% url 'mailing:mailing_edit' object.pk %}">Редактировать</a></button>
+                    {% endif %}
+                    {% if perms.mailing.delete_mailing %}
+                        <button type="button" class="btn btn-sm btn-outline-danger"><a href="{% url 'mailing:mailing_delete' object.pk %}">Удалить</a></button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
