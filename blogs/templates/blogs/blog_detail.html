@@ -1,23 +1,29 @@
 {% extends 'client/base.html'%}
 
 {% block content %}
+
+{% load my_tags %}
 <br>
 <div class="row">
     <div class="col-6">
         <div class="card">
-            <div class="cart-body">
+            <div class="cart-body text-center">
+                {% if object.picture %}
+                <img class="card-img-top"
+                    src="{{ object.picture|my_media }}" width="100" height="100"
+                    alt="Card image cap">
+                {% else %}
+                    <img src="/media/blogs/Блог.jpg" width="100" height="100"/>
+                {% endif %}
                 <div class="card-body">
                     <h3 class="card-title">{{ object.title }}</h3>
-                    <div class="card-body text-center">
-                        <img src="{{ object.image|mediapath }}"/>
-                    </div>
                     <p class="card-text">{{ object.body }}</p>
                 </div>
                 <div class="card-footer">
                     <div class=" mb-2"> Дата публикации: {{ object.date_of_creation }}</div>
                     <div class=" mb-2"> Автор: {{ object.user }}</div>
                     <div class=" mb-4"> Просмотры: {{ object.views_count }}</div>
-                    <a href="{% url 'mailing:index' %}" class="btn btn-outline-primary mb-2 align-center">На главную</a>
+                    <a href="{% url 'client:main' %}" class="btn btn-outline-primary mb-2 align-center">На главную</a>
                     {% if user.is_authenticated %}
                     <a href="{% url 'blogs:list' %}" class="btn btn-outline-primary mb-2 align-center">К блогам</a>
                     {% endif %}

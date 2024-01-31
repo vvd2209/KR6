@@ -1,12 +1,15 @@
 {% extends 'client/base.html'%}
 
 {% block content %}
+
+{% load my_tags %}
 <div class="col-sm-12 offset-md py">
     <h4 class="text-black">МЕНЮ</h4>
         <div class="col-12 mb-3">
         <a href="/" class="btn btn-outline-primary">Главная</a>
         <a href="{% url 'client:client_list' %}" class="btn btn-outline-primary">Клиенты</a>
         <a href="{% url 'mailing:mailing_list' %}" class="btn btn-outline-primary">Рассылки</a>
+        <a href="{% url 'mailing:message_list' %}" class="btn btn-outline-primary">Сообщения для рассылок</a>
         <a href="{% url 'blogs:list' %}" class="btn btn-outline-primary">Блог</a>
         {% if user.is_authenticated %}
             <a href="{% url 'users:profile' %}" class="btn btn-outline-primary">Профиль</a>
@@ -17,7 +20,30 @@
         {% endif %}
         </div>
 </div>
-<p>Количество рассылок: {{ mailing }}</p>
-<p>Количество активных рассылок: {{ mailing_active }}</p>
-<p>Количество уникальных клиентов для рассылок: {{ client }}</p>
+<p>Количество рассылок: {{ mailings_count }}</p>
+<p>Количество активных рассылок: {{ mailings_is_active_count }}</p>
+<p>Количество уникальных клиентов для рассылок: {{ unique_clients_count }}</p>
+
+{% for object in blog %}
+<div class="col-md-4">
+    <div class="card mb-4 box-shadow">
+        <div class="card-body">
+            <h3 class="card-text blog-title">
+                {{ object.title }}
+            </h3>
+            <hr>
+            <p class="card-text">
+                {{ object.content|truncatechars:150 }}
+            </p>
+            <div class="col-sm-12 offset-md py">
+                <div class="btn-group">
+                    <a href="{% url 'blogs:view' object.pk %}" class="btn btn-sm btn-outline-primary">
+                        Читать
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}

@@ -1,3 +1,4 @@
+{% load my_tags %}
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     {% for object in objects_list %}
     <div class="col-4">
@@ -5,10 +6,14 @@
             <div class="card-header">
                 <h3 class="card-title">{{ object.title }}</h3>
             </div>
-            <div class="card-body">
-                <div class="card-body text-center">
-                    <img src="{{ object.image|mediapath }}"/>
-                </div>
+            <div class="card-body text-center">
+                {% if object.picture %}
+                <img class="card-img-top"
+                    src="{{ object.picture|my_media }}" width="100" height="100"
+                    alt="Card image cap">
+                {% else %}
+                    <img src="/media/blogs/Блог.jpg" width="100" height="100"/>
+                {% endif %}
                 <p class="card-text">{{ object.body|truncatechars:100 }}</p>
             </div>
             <div class="card-footer">
