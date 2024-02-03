@@ -61,6 +61,7 @@ class ClientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
             new_client.user = self.request.user
         return super().form_valid(form)
 
+
 class ClientUpdateView(UpdateView):
     model = Client
     fields = ('full_name', 'email', 'comment', 'user',)
