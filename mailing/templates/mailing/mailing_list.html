@@ -10,13 +10,8 @@
         <div class="card-body">
             <p class="card-text">{{ object.start_time }}</p>
             <p class="card-text">{{ object.end_time }}</p>
-            <p class="card-text">{{ object.periodicity }}</p>
-            <p class="card-text">
-                {% if object.status == COMPLETED %}
-                    <span class="text-muted">{{ object.status }}</span>
-                {% else %}
-                    {{ object.status }}
-                {% endif %}
+            <p class="card-text">{{ object.get_periodicity_display }}</p>
+            <p class="card-text">{{ object.get_status_display }}
             </p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">

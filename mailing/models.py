@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from client.models import Client
@@ -23,9 +24,10 @@ class Mailing(models.Model):
     end_time = models.DateTimeField(verbose_name='время окончания рассылки', **NULLABLE)
     periodicity = models.CharField(max_length=50, choices=PERIODICITY_CHOICES, verbose_name='периодичность',
                                    **NULLABLE)
+    is_active = models.BooleanField(default=True, verbose_name='активность рассылки', **NULLABLE)
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=1, verbose_name='статус рассылки')
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, **NULLABLE)
-    clients = models.ManyToManyField(Client, verbose_name='клиенты рассылки', **NULLABLE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Пользователь', on_delete=models.CASCADE, **NULLABLE)
+    clients = models.ManyToManyField(Client, verbose_name='клиенты рассылки')
     message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name='рассылка', **NULLABLE)
 
     def __str__(self):
@@ -39,7 +41,7 @@ class Mailing(models.Model):
 class Message(models.Model):
     title = models.CharField(max_length=100, verbose_name='тема письма')
     text = models.TextField(verbose_name='тело письма')
-    owner = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, **NULLABLE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Пользователь', on_delete=models.CASCADE, **NULLABLE)
 
     def __str__(self):
         return self.title

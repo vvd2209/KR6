@@ -1,12 +1,15 @@
 {% extends 'client/base.html' %}
-
 {% block content %}
-
+{% load my_tags %}
 <div class="col-12 mb-5">
+    {% user_groups as user_group %}
+    {% if perms.mailing.add_mailing %}
     <a class="btn btn-outline-primary" href="{% url 'client:client_create'%}">Добавить клиента</a>
+    {% endif %}
     <a class="btn btn-outline-primary" href="{% url 'client:main'%}">Назад</a>
 </div>
 {% for object in object_list %}
+{% if user == object.user %}
 <div class="col-md-4">
     <div class="card mb-4 box-shadow">
         <div class="card-body">
@@ -25,5 +28,6 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endfor %}
 {% endblock %}

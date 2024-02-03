@@ -18,4 +18,4 @@ class MailingForms(StyleFormMixin, forms.ModelForm):
 class MessageForms(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Message
-        fields = ('title', 'text', 'owner',)
+        fields = ('title', 'text', )

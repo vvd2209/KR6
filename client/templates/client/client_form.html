@@ -1,32 +1,35 @@
 {% extends 'client/base.html'%}
 {% block content %}
+{% load my_tags %}
 <div class="col-12 mb-5">
 <a class="btn btn-outline-primary" href="{% url 'client:client_list'%}">Назад</a>
 </div>
 <div class="col-12">
-    <form method="post" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            Клиент
-                        </h3>
+    <form class="row" method="post" enctype="multipart/form-data">
+        <div class="col-5">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+
+                        {% if object %}
+                        <h3>Изменить клиента</h3>
+                        {% else %}
+                        <h3>Добавить клиента</h3>
+                        {% endif %}
+
                     </div>
-                    <div class="card-body">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-success">
-                            {% if object %}
-                                Сохранить
-                            {% else %}
-                                Создать
-                            {% endif %}
-                        </button>
-                    </div>
+                </div>
+                <div class="card-body">
+                    {% csrf_token %}
+                    {{ form.as_p }}
                 </div>
             </div>
         </div>
+        <p>
+            <button type="submit" class="btn btn-success">Сохранить</button>
+            <button><a href="{% url 'client:client_list' %}" class="btn btn-warning">Отмена</a></button>
+        </p>
     </form>
 </div>
+<br>
 {% endblock %}

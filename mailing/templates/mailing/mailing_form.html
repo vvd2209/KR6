@@ -1,32 +1,57 @@
 {% extends 'client/base.html'%}
 {% block content %}
+{% load my_tags %}
 <div class="col-12 mb-5">
 <a class="btn btn-outline-primary" href="{% url 'client:main' %}">Назад</a>
 </div>
 <div class="col-12">
-    <form method="post" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            Добавление рассылки
-                        </h3>
+    <form class="row" method="post" enctype="multipart/form-data">
+        <div class="col-5">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        {% if object %}
+                        <h3>Изменить рассылку</h3>
+                        {% else %}
+                        <h3>Добавить рассылку</h3>
+                        {% endif %}
                     </div>
-                    <div class="card-body">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-success">
-                            {% if object %}
-                                Сохранить
-                            {% else %}
-                                Создать
-                            {% endif %}
-                        </button>
+                </div>
+                <div class="card-body">
+                    {% csrf_token %}
+                    {% manager_groups as manager_group %}
+                    {% if user.groups.all.0 == manager_group %}
+                    <div class="mb-3">
+                        {{ form.is_active.label_tag }}{{ form.is_active }}
+                    </div>
+                    {% endif %}
+                    <div class="mb-3">
+                        {{ form.message.label_tag }}{{ form.message }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.status.label_tag }}{{ form.status }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.start_time.label_tag }}{{ form.start_time }}{{ form.start_time.help_text }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.end_time.label_tag }}{{ form.end_time }}{{ form.end_time.help_text }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.periodicity.label_tag }}{{ form.periodicity }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.clients.label_tag }}{{ form.clients }}
                     </div>
                 </div>
             </div>
         </div>
+        <p>
+            <button type="submit" class="btn btn-success">Сохранить</button>
+            <button><a href="{% url 'mailing:mailing_list' %}" class="btn btn-warning">Отмена</a></button>
+        </p>
     </form>
 </div>
+<br>
+
 {% endblock %}
