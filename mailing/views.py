@@ -35,6 +35,9 @@ class MailingListView(LoginRequiredMixin, ListView):
     template_name = 'mailing/mailing_list.html'
     context_object_name = 'objects_list'
 
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
 
 class MailingDetailView(LoginRequiredMixin, DetailView):
     model = Mailing
@@ -100,9 +103,12 @@ class MailingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     success_url = reverse_lazy('mailing:mailing_list')
 
 
-class MessageListView(ListView):
+class MessageListView(LoginRequiredMixin, ListView):
     model = Message
     template_name = 'mailing/message_list.html'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
 
 
 class MessageDetailView(LoginRequiredMixin, DetailView):

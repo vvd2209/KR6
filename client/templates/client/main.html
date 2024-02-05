@@ -5,20 +5,37 @@
 {% load my_tags %}
 <div class="col-sm-12 offset-md py">
     <h4 class="text-black">МЕНЮ</h4>
-        <div class="col-12 mb-3">
+        <div class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+
+        {% manager_groups as manager_group %}
+        {% user_groups as user_group %}
+
+        {% if user.is_authenticated %}
         <a href="/" class="btn btn-outline-primary">Главная</a>
-        <a href="{% url 'client:client_list' %}" class="btn btn-outline-primary">Клиенты</a>
         <a href="{% url 'mailing:mailing_list' %}" class="btn btn-outline-primary">Рассылки</a>
         <a href="{% url 'mailing:message_list' %}" class="btn btn-outline-primary">Сообщения для рассылок</a>
+        <a href="{% url 'log:log_list'%}" class="btn btn-outline-primary">Логи рассылок</a>
         <a href="{% url 'blogs:list' %}" class="btn btn-outline-primary">Блог</a>
-        {% if user.is_authenticated %}
-            <a href="{% url 'users:profile' %}" class="btn btn-outline-primary">Профиль</a>
+
+        {% if user.groups.all.0 == user_group %}
+        <li><a href="{% url 'client:client_list' %}" class="nav-link px-2">Клиенты</a></li>
+        {% endif %}
+
+        {% if user.groups.all.0 == manager_group %}
+        <li><a href="{% url 'users:users_list' %}" class="nav-link px-2">Пользователи</a></li>
+        {% endif %}
+
+            <a href="{% url 'users:profile' %}" class="btn btn-outline-primary">Профиль: {{ user.email }}</a>
             <a href="{% url 'users:logout' %}" class="btn btn-outline-primary">Выход</a>
         {% else %}
             <a href="{% url 'users:register' %}" class="btn btn-outline-primary">Регистрация</a>
             <a href="{% url 'users:login' %}" class="btn btn-outline-primary">Войти</a>
         {% endif %}
         </div>
+    <br>
+    <br>
+<br>
+<br>
 </div>
 <p>Количество рассылок: {{ mailings_count }}</p>
 <p>Количество активных рассылок: {{ mailings_is_active_count }}</p>

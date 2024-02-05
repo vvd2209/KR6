@@ -18,6 +18,7 @@ class MainPage(TemplateView):
     }
     context_object_name = 'objects_list'
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         mailings_count = len(Mailing.objects.all())
