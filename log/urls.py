@@ -6,5 +6,5 @@ from log.views import LogListView
 app_name = LogConfig.name
 
 urlpatterns = [
-    path('log_list', LogListView.as_view(), name='log_list'),
+    path('log', LogListView.as_view(), name='log_list'),
 ]

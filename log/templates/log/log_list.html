@@ -1,12 +1,14 @@
 {% extends "client/base.html" %}
 {% block content %}
-<title>Логи рассылок</title>
-
+{% load my_tags %}
+<div class="col-12 mb-5">
+    <a class="btn btn-outline-primary" href="{% url 'client:main'%}">На главную</a>
+    <a class="btn btn-outline-primary" href="{% url 'mailing:mailing_list'%}">Назад</a>
+</div>
 <main role="main" class="inner cover">
     <h2 class="cover-heading">Логи рассылок</h2>
     <br>
 </main>
-
 <div class="table">
     {% for object in objects_list %}
     {% manager_groups as manager_group %}
@@ -21,20 +23,17 @@
                 <p class="card-text">Ответ сервера:  {{ object.server_response }}</p>
                 {% endif %}
                 {% if user == object.user %}
-                <p class="card-text">клиент:  {{ object.client }}</p>
+                <p class="card-text">Клиент: {{ object.client }}</p>
                 {% endif %}
-                <p class="card-text">Автор рассылки:  {{ object.user }}</p>
+                <p class="card-text">Автор рассылки: {{ object.user }}</p>
             </div>
             <div class="card-footer">
-                <div class=" mb-2"> Статус рассылки:  {{ object.status }}</div>
+                <div class=" mb-2"> Статус рассылки: {{ object.status }}</div>
                 <a class="mb-4"></a>
-
             </div>
         </div>
     </div>
     <br>
-
     {% endfor%}
-
 </div>
 {% endblock %}

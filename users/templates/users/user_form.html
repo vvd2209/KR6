@@ -1,12 +1,19 @@
 {% extends 'client/base.html'%}
 
 {% block content %}
+
 <div class="col-12">
     <form class="row" method="post" enctype="multipart/form-data">
         <div class="col-4"></div>
         <div class="col-5">
             <div class="card">
                 <div class="card-header">
+                    <br>
+                    <br>
+                    <a class="btn btn-outline-primary" href="{% url 'client:main'%}">На главную</a>
+                    <br>
+                    <br>
+                    <br>
                     <div class="card-title">
                         Профиль
                     </div>

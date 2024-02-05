@@ -1,8 +1,12 @@
 from random import random, randint
 
+from django.contrib.auth import login
+from django.contrib.auth.models import Group
+from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.http import urlsafe_base64_decode
 from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 
 from config import settings
@@ -34,22 +38,28 @@ class RegisterView(CreateView):
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[user.email]
             )
+            g = Group.objects.get(name='user')
+            g.user_set.add(user)
             return super().form_valid(form)
 
 
 class VerificationView(TemplateView):
     template_name = 'users/verification_email.html'
+    form_class = UserRegisterForm
 
     def post(self, request):
         verification_code = request.POST.get('verification_code')
         user_code = User.objects.filter(verification_code=verification_code).first()
-
-        if user_code.verification_code == verification_code:
+        print(verification_code)
+        print(user_code)
+        print(request.POST)
+        if user_code:
             user_code.is_active = True
             user_code.save()
             return redirect('users:login')
         else:
             return redirect('users:verification_error')
+
 
 
 class ErrorVerification(TemplateView):
