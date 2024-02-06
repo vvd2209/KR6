@@ -1,4 +1,6 @@
 from django import forms
+
+from client.models import Client
 from mailing.models import Mailing, Message
 
 
@@ -10,9 +12,27 @@ class StyleFormMixin:
 
 
 class MailingForms(StyleFormMixin, forms.ModelForm):
+    clients = forms.CheckboxSelectMultiple()
+
     class Meta:
         model = Mailing
-        fields = ('start_time', 'end_time', 'periodicity', 'clients', 'message',)
+        exclude = ['user', 'is_active']
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['clients'].queryset = Client.objects.filter(user=user)
+
+
+class MailingUpdateForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = Mailing
+        exclude = ['is_active']
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['clients'].queryset = Client.objects.filter(user=user)
+        self.fields['user'].disabled = True
 
 
 class MessageForms(StyleFormMixin, forms.ModelForm):

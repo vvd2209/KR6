@@ -15,7 +15,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 from client.models import Client
 from log.models import Log
-from mailing.forms import MailingForms, MessageForms
+from mailing.forms import MailingForms, MessageForms, MailingManagerUpdateForm, MailingUpdateForm
 from mailing.models import Mailing, Message
 from mailing.servises import mail_status_chenge
 
@@ -92,9 +92,21 @@ class MailingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
 class MailingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Mailing
-    form_class = MailingForms
+    form_class = MailingUpdateForm
+    template_name = 'mailing/mailing_form.html'
     permission_required = 'mailing.change_mailing'
     success_url = reverse_lazy('mailing:mailing_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_form_class(self):
+        if self.request.user.groups.filter(name='manager').exists():
+            return MailingManagerUpdateForm
+        else:
+            return MailingUpdateForm
 
 
 class MailingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
