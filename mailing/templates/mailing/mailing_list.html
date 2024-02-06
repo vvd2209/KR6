@@ -21,7 +21,8 @@
     <div class="col-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">{{ object.name }}</h3>
+                <h3 class="card-title">{{ object.message }} {{ object.start_time }}</h3>
+
                 {% if object.is_active == True %}
                 <div class=" mb-2"> Активна </div>
                 {% else %}
@@ -29,7 +30,7 @@
                 {% endif %}
             </div>
             <div class="card-body">
-                <p class="card-text">{{ object.body|truncatechars:100 }}</p>
+                <p class="card-text">{{ object.clients.all }}</p>
             </div>
             <div class="card-footer">
                 <div class=" mb-2"> Автор: {{ object.user }}</div>
