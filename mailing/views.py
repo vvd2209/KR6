@@ -52,11 +52,23 @@ class MailingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     success_url = reverse_lazy('mailing:mailing_list')
     template_name = 'mailing/mailing_form.html'
 
-    # def form_valid(self, form):
-    #     self.object = form.save()
-    #     self.object.end_time = self.object.start_time + timedelta(minutes=5)
-    #     self.object.save()
-    #     return super().form_valid(form)
+    def get(self, request, **kwargs):
+        form = self.form_class(self.request.user, request.POST)
+        context = {'form': form}
+        return render(request, 'mailing/mailing_form.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.user, request.POST)
+
+        if form.is_valid():
+            clients = form.cleaned_data.get('clients')
+            if not clients:
+                form.add_error('clients', 'Выберите хотя бы одного клиента.')
+            mailing = form.save(commit=False)
+            mailing.user = self.request.user
+            mailing.save()
+            form.save_m2m()
+            return redirect(self.success_url)
 
     def form_valid(self, form):
         tz = pytz.timezone('Europe/Moscow')
